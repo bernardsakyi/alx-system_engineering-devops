@@ -1,1 +1,1 @@
-Ripo for shell project
+.
