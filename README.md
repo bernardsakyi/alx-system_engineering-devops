@@ -1,1 +1,0 @@
-Git shell project ripo
