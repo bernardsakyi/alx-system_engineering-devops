@@ -1,4 +1,5 @@
-# Command line for the win {Bash} {Scripting}
+# Command line for the win *<code>Bash</code>* *<code>Scripting</code>*
+Author: Bernard B. Sakyi
 
 <img src="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-sysadmin_devops/324/06AChAO.png" width="70%" height="70%" />
 
@@ -7,13 +8,22 @@
 
 This project is NOT mandatory at all. It is 100% optional. Doing any part of this project will add a project grade of over 100% to your average. Your score won’t get hurt if you don’t do it, but if your current average is greater than your score on this project, your average might go down. Have fun!
 
-## More Info
+## Requirements
 
-## Manual QA Review
+### General
++ A README.md file, at the root of the folder of the project, is mandatory
++ This project will be manually reviewed.
++ As each task is completed, the name of that task will turn green
++ Create a screenshot, showing that you completed the required levels
++ Push this screenshot with the right name to GitHub, in either the PNG or JPEG format
+
+
+### Manual QA Review
 It is your responsibility to request a review for this project from a peer. If no peers have been reviewed, you should request a review from a TA or staff member.
 
 ### CMD CHALLENGE
 [CMD CHALLENGE Link:](https://cmdchallenge.com/#/create_symlink)
 
 ### Tasks
-[0. First 九 tasks](0-first_9_tasks.png)
+* [0. First 九 tasks](0-first_9_tasks.png)
+* [1-next_9_tasks.png](1-next_9_tasks.png)
