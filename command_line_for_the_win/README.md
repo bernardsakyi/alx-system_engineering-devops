@@ -27,3 +27,4 @@ It is your responsibility to request a review for this project from a peer. If n
 ### Tasks
 * [0. First 九 tasks](0-first_9_tasks.png)
 * [1-next_9_tasks.png](1-next_9_tasks.png)
+* [2. Reach the perfect cube, 27](2-next_9_tasks.png)
