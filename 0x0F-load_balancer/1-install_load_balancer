@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# This script configures HAProxy to distribute load among webserver 1 and webserver 2
+sudo apt-get update
+sudo apt-get install haproxy -y
+sudo sed -i "\$aENABLED=1\n" /etc/default/haproxy
+CUSTOMER_END="\\\nfrontend http_front\n\tbind *:80\n\tmode http\n\tdefault_backend http_back\n"
+BACK_END="backend http_back\n\tbalance roundrobin\n\tserver 314-web-01 35.231.59.48:80 check\n\tserver 314-web-02 35.237.55.203:80 check\n"
+sudo sed -i "\$a$CUSTOMER_END\n$BACK_END" /etc/haproxy/haproxy.cfg
+sudo service haproxy restart

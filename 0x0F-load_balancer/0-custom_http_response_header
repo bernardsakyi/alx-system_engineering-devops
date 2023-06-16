@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# using bash to automate the X-Server-By header for nginx application loadbalancer
+sudo apt-get update
+sudo apt-get -y install nginx
+NEW_HEADER="\\\tadd_header X-Served-By $HOSTNAME;\n"
+sudo sed -i "37i $NEW_HEADER" /etc/nginx/sites-available/default
+sudo service nginx restart
