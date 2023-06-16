@@ -1,1 +1,1 @@
-# Setting Up the Application server
+# Scripts Functionalities

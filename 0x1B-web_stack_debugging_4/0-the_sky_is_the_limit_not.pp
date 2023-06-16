@@ -1,13 +1,10 @@
-# This scirpt is to increases the amount of traffic an nginx server can handle.
+# Fix the number of max open files per process
 
-# Now increase the ULIMIT of the default file
 exec { 'fix--for-nginx':
-  command => 'sed -i "s/15/4096/" /etc/default/nginx',
-  path    => '/usr/local/bin/:/bin/'
-} ->
+  command => "/bin/sed -i /etc/default/nginx -e 's/15/3000/'"
+}
 
-# Reboot the Nginx
-exec { 'nginx-restart':
-  command => 'nginx restart',
-  path    => '/etc/init.d/'
+exec { 'restart nginx':
+  command => '/usr/sbin/service nginx restart',
+  require => Exec['fix--for-nginx']
 }

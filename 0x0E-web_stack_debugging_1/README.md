@@ -1,1 +1,1 @@
-# Web Stack Debugging
+# Scripts Functionalities

@@ -1,27 +1,43 @@
 #!/usr/bin/python3
+"""Export data from an API to CSV format.
 """
-Exports the api response to a CSV file
-"""
-
 import csv
 import requests
-import sys
+from sys import argv
 
+if __name__ == '__main__':
+    # Checks if the argument can be converted to a number
+    try:
+        emp_id = int(argv[1])
+    except ValueError:
+        exit()
 
-if __name__ == "__main__":
-    url = "https://jsonplaceholder.typicode.com/"
-    employee_id = sys.argv[1]
-    filename = employee_id + ".csv"
+    # Main formatted names to API uris and filenames
+    api_url = 'https://jsonplaceholder.typicode.com'
+    user_uri = '{api}/users/{id}'.format(api=api_url, id=emp_id)
+    todo_uri = '{user_uri}/todos'.format(user_uri=user_uri)
+    filename = '{emp_id}.csv'.format(emp_id=emp_id)
 
-    employee = requests.get(url + "users/" + employee_id)
-    employee = employee.json()
+    # User Response
+    res = requests.get(user_uri).json()
 
-    tasks = requests.get(url + "todos?userId=" + employee_id)
-    tasks = tasks.json()
+    # Username of the employee
+    username = res.get('username')
 
-    with open(filename, mode="w") as csv_file:
-        writer = csv.writer(csv_file, delimiter=',',
-                            quotechar='"', quoting=csv.QUOTE_ALL)
-        for item in tasks:
-            writer.writerow((item.get('userId'), employee.get('username'),
-                            item.get('completed'), item.get('title')))
+    # User TODO Response
+    res = requests.get(todo_uri).json()
+
+    # Create the new file for the user to save the information
+    # Filename example: `{user_id}.csv`
+    with open(filename, 'w', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_ALL)
+
+        for elem in res:
+            # Completed or non-completed task
+            status = elem.get('completed')
+
+            # The task name
+            title = elem.get('title')
+
+            # Writing each result of API response in a row of a CSV file
+            writer.writerow([emp_id, username, status, title])

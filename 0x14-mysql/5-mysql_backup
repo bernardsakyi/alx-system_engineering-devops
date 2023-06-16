@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-# backup and compress my databases
-mysqldump --all-databases -u root --password="$1" > backup.sql
-day=$(date +"%d")
-month=$(date +"%m")
-year=$(date +"%Y")
-file_name="$day-$month-$year.tar.gz"
-tar -czvf "$file_name" backup.sql
+# Generates a MySQL dump with all databases
+# and creates a compressed archive out of it.
+
+if [ "$1" ] ; then
+    touch .mylogin.cnf
+    printf "[client]\nuser = %s\npassword = %s" "root" "$1" >> .mylogin.cnf
+    chmod 600 .mylogin.cnf
+    mysqldump --defaults-extra-file=.mylogin.cnf --all-databases > backup.sql
+    tar -czvf "$(date '+%d-%m-%Y').tar.gz" backup.sql
+fi

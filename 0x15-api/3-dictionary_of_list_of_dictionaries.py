@@ -1,31 +1,61 @@
 #!/usr/bin/python3
+"""Export data from an API to JSON format.
 """
-Script returns nested dictionaries
-"""
-
-import json
+from json import dumps
 import requests
-import sys
 
 
-if __name__ == "__main__":
-    url = "https://jsonplaceholder.typicode.com/"
-    filename = "todo_all_employees.json"
+def get_tasks_from_employee(response, employee):
+    """Get all the tasks of an employee
+    """
+    # Creates a list to stores all the tasks of the employee
+    employee_tasks = list()
 
-    employees = requests.get(url + "users/")
-    employees = employees.json()
+    # Find the tasks that belongs to this employee
+    for task in response:
+        if task.get('userId') == employee.get('id'):
+            task_data = {
+                'username': employee.get('username'),
+                'task': task.get('title'),
+                'completed': task.get('completed'),
+            }
 
-    employee_tasks = {}
-    for employee in employees:
-        employee_id = employee.get('id')
-        tasks = requests.get(url + "todos?userId=" + str(employee_id))
-        tasks = tasks.json()
+            employee_tasks.append(task_data)
 
-        tasks_list = []
-        for item in tasks:
-            tasks_list.append(item)
+    # Returns the list of tasks
+    return employee_tasks
 
-        employee_tasks[employee_id] = tasks_list
 
-    with open(filename, mode="w") as json_file:
-        json.dump(employee_tasks, json_file)
+if __name__ == '__main__':
+    # Main formatted names to API uris and filenames
+    api_url = 'https://jsonplaceholder.typicode.com'
+    users_uri = '{api}/users'.format(api=api_url)
+    todos_uri = '{api}/todos'.format(api=api_url)
+    filename = 'todo_all_employees.json'
+
+    # Users Response
+    u_res = requests.get(users_uri).json()
+
+    # Users TODO Response
+    t_res = requests.get(todos_uri).json()
+
+    users_tasks = dict()
+
+    # Stores all the tasks of each employee in the API data
+    for user in u_res:
+        user_id = user.get('id')
+
+        # A list of all tasks of current employee
+        user_tasks = get_tasks_from_employee(t_res, {
+            'id': user_id,
+            'username': user.get('username')
+        })
+
+        # Inserting the list of all tasks of current employee
+        # to a dictionary that stores all the employees with their tasks.
+        users_tasks[user_id] = user_tasks
+
+    # Create the new file with all the information
+    # Filename example: `todo_all_employees.json`
+    with open(filename, 'w', encoding='utf-8') as jsonfile:
+        jsonfile.write(dumps(users_tasks))

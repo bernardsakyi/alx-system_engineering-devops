@@ -1,30 +1,42 @@
 #!/usr/bin/python3
+"""Export data from an API to JSON format.
 """
-Export api response to Json
-"""
-
-import json
+from json import dumps
 import requests
-import sys
+from sys import argv
 
+if __name__ == '__main__':
+    # Checks if the argument can be converted to a number
+    try:
+        emp_id = int(argv[1])
+    except ValueError:
+        exit()
 
-if __name__ == "__main__":
-    url = "https://jsonplaceholder.typicode.com/"
-    employee_id = sys.argv[1]
-    filename = employee_id + ".json"
+    # Main formatted names to API uris and filenames
+    api_url = 'https://jsonplaceholder.typicode.com'
+    user_uri = '{api}/users/{id}'.format(api=api_url, id=emp_id)
+    todo_uri = '{user_uri}/todos'.format(user_uri=user_uri)
+    filename = '{emp_id}.json'.format(emp_id=emp_id)
 
-    employee = requests.get(url + "users/" + employee_id)
-    employee = employee.json()
+    # User Response
+    u_res = requests.get(user_uri).json()
 
-    tasks = requests.get(url + "todos?userId=" + employee_id)
-    tasks = tasks.json()
+    # User TODO Response
+    t_res = requests.get(todo_uri).json()
 
-    tasks_list = []
-    for item in tasks:
-        tasks_list.append(item)
+    # A list of all tasks of an user
+    user_tasks = list()
 
-    employee_tasks = {}
-    employee_tasks[employee_id] = tasks_list
+    for elem in t_res:
+        data = {
+            'task': elem.get('title'),
+            'completed': elem.get('completed'),
+            'username': u_res.get('username')
+        }
 
-    with open(filename, mode="w") as json_file:
-        json.dump(employee_tasks, json_file)
+        user_tasks.append(data)
+
+    # Create the new file for the user to save the information
+    # Filename example: `{user_id}.json`
+    with open(filename, 'w', encoding='utf-8') as jsonfile:
+        jsonfile.write(dumps({emp_id: user_tasks}))

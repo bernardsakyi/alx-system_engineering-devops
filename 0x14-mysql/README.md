@@ -1,1 +1,1 @@
-# MySQL Replication task
+# Scripts Functionalities
