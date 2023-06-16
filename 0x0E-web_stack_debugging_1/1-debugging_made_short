@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ensuring nginx listerns on port 80
-sudo rm /etc/nginx/sites-enabled/default
-sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
-sudo service nginx reload
+# Configure the server to enable Nginx on 80 port
+
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+pkill -1 nginx
