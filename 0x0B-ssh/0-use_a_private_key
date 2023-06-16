@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# a bash script that initialize an ssh connection to a webserver
+ssh -i ~/.ssh/school ubuntu@8.8.8.8
